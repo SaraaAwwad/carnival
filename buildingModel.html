@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Building</title>
+   <link rel="icon" href="buildingTexture/MIU-Logo-20th.png">
+     <script src="buildingTexture/three.min.js"></script>
+     <script src="buildingTexture/functions.js"></script>
+  <style>
+    h3{
+      display: block;
+      font-size: 50px;
+      line-height: 28px;
+      color: #082236;
+      text-decoration: none;
+	  z-index: 10;
+	  position: absolute;
+      margin: 50px 5px;
+      position: absolute;
+      text-align: center;
+      opacity: 0.5;
+      width:100%;
+	  }
+  </style>
+</head>
+<body>
+  <div>
+    <h3> Building Model</h3>
+  </div>
+
+  <script>
+    var scene, camera, renderer, width, height
+    var color = { background: 0xA9D5F6 }
+    width = window.innerWidth
+    height = window.innerHeight
+	
+	
+	init()
+    function init(){
+	
+    scene = new THREE.Scene()
+    camera = new THREE.PerspectiveCamera(45, width / height, 1, 5000);
+    camera.position.x = 330;
+    camera.position.y = 330;
+	camera.position.z = 330;
+    camera.lookAt({
+        x: 0,
+        y: 0,
+        z: 0
+    });
+	scene.add(camera)
+	
+	renderer = new THREE.WebGLRenderer()
+    renderer.setSize(width, height)
+    renderer.setClearColor(color.background)
+	renderer.domElement.style.position = "relative";
+    renderer.shadowMap.enabled = true
+	renderer.shadowMapEnabled = true;
+    renderer.shadowMapSoft = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap
+    document.body.appendChild(renderer.domElement)
+
+	animate()
+	//rotate()
+	addTrees()
+    Light()
+    building()
+    //loop()
+    onWindowResize()
+    
+    function building () {
+      var planeGeometry = new THREE.BoxBufferGeometry(350,6,350)
+      var plane = utils.makeMesh('lambert', planeGeometry, 0x6f5f6a)
+      plane.position.y = -2
+      scene.add(plane)
+
+      addBuilding()
+
+      function addBuilding () {
+        var building = createBuilding()
+        building.position.z = -5
+        scene.add(building)  
+      }
+	  
+
+      function createBuilding () {
+        var building = new THREE.Object3D()
+
+		//Base
+        var baseGeometry = new THREE.BoxBufferGeometry(100, 3, 100)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x838383)
+        base.position.y = 1
+        building.add(base)
+
+		//Main Building Shape
+        var MainCoords = [
+          [-60, -30], [-60, 20], [60, 20], [60, 0], [60, -30], [60, -30]
+        ]
+		//Main Building Creation
+        var MainShape = utils.makeShape(MainCoords)
+        var Geometry = utils.makeExtrudeGeometry(MainShape,100)
+        var Material = new THREE.MeshPhongMaterial({color: 0x796e8c,
+        opacity: 0.9,
+        transparent: true})
+        var Main = new THREE.Mesh(Geometry, Material)
+        Main.castShadow = true
+        Main.receiveShadow = true
+        building.add(Main)
+
+		//Main Roof Base
+        var MainTop = MainShape
+        var Geometry = utils.makeExtrudeGeometry(MainTop, 1)
+        var Material = utils.makeMesh('lambert', Geometry, 0x9F9378)
+        Material.position.y = 100
+        building.add(Material)
+        
+        //Main Building Plat
+        var Geometry = new THREE.BoxBufferGeometry(155,3,90)
+        var Plat = utils.makeMesh('lambert', Geometry, 0x9F9378)
+        Plat.position.set(1,18,25)
+        building.add(Plat)
+
+		//Vertical Plat
+        var Geometry = new THREE.BoxBufferGeometry(100, 15, 3)
+        var Vertical = utils.makeMesh('phong', Geometry, 0x9F9378)
+        Vertical.receiveShadow = false
+        Vertical.position.set(-26.5, 24, 68.5)
+        building.add(Vertical)
+
+		//Vertical White Plat
+        var Geometry = new THREE.BoxBufferGeometry(100, 3, 3)
+        var Material = utils.makeMesh('phong', Geometry, 0xffffff)
+        Material.position.set(-26.5, 33, 68.5)
+        building.add(Material)
+
+		//First Front Pillar
+        var Geometry = new THREE.CylinderGeometry(2, 2, 15, 32)
+        var Pillar = utils.makeMesh('lambert', Geometry, 0xffffff)
+        Pillar.position.set(-40, 10, 55)
+        building.add(Pillar)
+
+		//Second Front Pillar
+        var Pillar2 = Pillar.clone()
+        Pillar2.position.set(40, 10, 55)
+        building.add(Pillar2)
+
+		//Long 8 Pillars
+        var Verticles = new THREE.Object3D()
+        var Geometry = new THREE.BoxBufferGeometry(4, 102, 4)
+        var Mesh = utils.makeMesh('phong', Geometry, 0xffffff)
+        
+		var Verticle1 = Mesh.clone()
+        Verticle1.position.set(-60, 52, 30)
+        Verticles.add(Verticle1)
+		
+        var Verticle2 = Mesh.clone()
+        Verticle2.position.set(-60, 52, -20)
+        Verticles.add(Verticle2)
+
+		var Verticle3 = Mesh.clone()
+        Verticle3.position.set(60, 52, -18)
+        Verticles.add(Verticle3)
+		
+		var Verticle4 = Mesh.clone()
+        Verticle4.position.set(60, 52, 30)
+        Verticles.add(Verticle4)
+		
+		var Verticle5 = Mesh.clone()
+        Verticle5.position.set(80, 52, -21)
+        Verticles.add(Verticle5)
+		
+		var Verticle6 = Mesh.clone()
+        Verticle6.position.set(-80, 52, -59.5)
+        Verticles.add(Verticle6)
+		
+		var Verticle7 = Mesh.clone()
+        Verticle7.position.set(80, 52, -59.5)
+        Verticles.add(Verticle7)
+		
+		var Verticle8 = Mesh.clone()
+        Verticle8.position.set(-80, 52, -18)
+        Verticles.add(Verticle8)
+		building.add(Verticles)
+		
+        var Coords = [
+          [-80, 20], [-80, 60], [80, 60], [80, 20], [-80, 20]
+        ]
+        
+        var Main = utils.makeShape(Coords)
+		var Geometry = utils.makeExtrudeGeometry(Main, 90)        
+		var backMain = utils.makeMesh('lambert', Geometry, 0x9F9378)
+        building.add(backMain)
+
+		//Back Main Roof Base
+        var Top1 = Main
+        var Geometry = utils.makeExtrudeGeometry(Top1, 1)
+        var Mesh = utils.makeMesh('lambert', Geometry, 0x9F9378)
+		
+        Mesh.position.x = 0
+		Mesh.position.y = 100
+        Mesh.position.z = 0
+       
+        building.add(Mesh)
+		
+		var Top2 = Main
+        var frontTopGeometry = utils.makeExtrudeGeometry(Top2, 1)
+        var Mesh = utils.makeMesh('lambert', Geometry, 0xffffff)
+        Mesh.position.x = 0
+		Mesh.position.y = 90
+        Mesh.position.z = 0
+       
+        building.add(Mesh)
+
+		//Sideways
+		var Geometry = new THREE.BoxBufferGeometry(50, 3, 168)
+		var Mesh = utils.makeMesh('lambert', Geometry, 0x838383)
+        Mesh.position.x = 0
+		Mesh.position.y = 1
+        Mesh.position.z = 80
+        Mesh.rotation.y = 1 * Math.PI
+        building.add(Mesh)
+		
+		var Geometry = new THREE.BoxBufferGeometry(20, 3, 310)
+		var Mesh = utils.makeMesh('lambert', Geometry, 0x838383)
+        Mesh.position.x = -150
+		Mesh.position.y = 1
+        Mesh.position.z = 5
+        Mesh.rotation.y = 1 * Math.PI
+        building.add(Mesh)
+	
+	    var Geometry = new THREE.BoxBufferGeometry(20, 3, 310)
+		var Mesh = utils.makeMesh('lambert', Geometry, 0x838383)
+        Mesh.position.x = -5
+		Mesh.position.y = 1
+        Mesh.position.z = -145
+        Mesh.rotation.y = 1.5 * Math.PI
+        building.add(Mesh)
+		
+		var Geometry = new THREE.BoxBufferGeometry(20, 3, 320)
+		var Mesh = utils.makeMesh('lambert', Geometry, 0x838383)
+        Mesh.position.x = 150
+		Mesh.position.y = 1
+        Mesh.position.z = 5
+        Mesh.rotation.y = 1 * Math.PI
+        building.add(Mesh)
+		
+		var Geometry = new THREE.BoxBufferGeometry(20, 3, 310)
+		var Mesh = utils.makeMesh('lambert', Geometry, 0x838383)
+        Mesh.position.x = -5
+		Mesh.position.y = 1
+        Mesh.position.z = 155
+        Mesh.rotation.y = 1.5 * Math.PI
+        building.add(Mesh)
+		
+		
+	    //Side Window
+        var Geometry = new THREE.PlaneGeometry(30,70,1,1)
+        var Material = new THREE.MeshPhongMaterial({color: 0x796e8c,
+        opacity: 0.8,
+        transparent: true})
+		
+        var Window = new THREE.Mesh(Geometry, Material)
+        Window.position.set(81, 46, -40.5)
+        Window.rotation.y = 0.5 * Math.PI
+        building.add(Window)
+		
+		//Side Window 2
+        var Geometry = new THREE.PlaneGeometry(32,76,1,1)
+        var Material = new THREE.MeshPhongMaterial({color: 0x796e8c,
+        opacity: 0.8,
+        transparent: true})
+
+        var Window2 = new THREE.Mesh(Geometry, Material)
+        Window2.position.set(-81, 46, -40)
+        Window2.rotation.y = 1.5 * Math.PI
+        building.add(Window2)
+		
+	
+        var Back = addWindow()
+        Back.scale.set(1.5,1.5,1)
+        Back.rotation.y = Math.PI
+        Back.position.set(40, 68, -61)
+        for (var i = 0; i < 2; i++) {
+          for (var j = 0; j < 2; j++) {
+            var window = Back.clone()
+            window.position.x -= i * 70
+            window.position.y -= j * 45
+            building.add(window)
+          }
+        }
+        return building
+      }
+
+      function addWindow () {
+        var window = new THREE.Object3D()
+        var Geometry = new THREE.PlaneGeometry(20, 20)
+        var glass = utils.makeMesh2('phong', Geometry, 0x796e8c)
+        window.add(glass)
+
+        var BorderGeometry = new THREE.BoxBufferGeometry(20.5,0.5,0.5)
+        var Border = utils.makeMesh('phong', BorderGeometry, 0xffffff)
+
+        var Top = Border.clone()
+        Top.position.y = 10
+        window.add(Top)
+
+        var Bottom = Border.clone()
+        Bottom.position.y = -10
+        window.add(Bottom)
+
+        var Left = Border.clone()
+        Left.rotation.z = 0.5 * Math.PI
+        Left.position.x = -10
+        window.add(Left)
+
+        var Right = Left.clone()
+        Right.position.x = 10
+        window.add(Right)
+
+        return window
+      }
+    }
+    
+    function Light() {
+      
+	    var direction = 400;
+        var directional = new THREE.DirectionalLight( 0xffffff , 1.1);
+        directional.position.set( 300, 1000, 500 );
+        directional.target.position.set( 0, 0, 0 );
+        directional.castShadow = true;
+        directional.shadow.camera = new THREE.OrthographicCamera( -direction, direction, direction, -direction,  500, 1600 );
+        directional.shadow.bias = 0.0001;
+        directional.shadow.mapSize.width = directional.shadow.mapSize.height = 1024;
+        scene.add(directional)
+        var light = new THREE.AmbientLight( 0xffffff, 0.4 )
+        scene.add(light)
+
+    }
+	
+	function addTrees () {
+        var Position = [ [-110, -110],[-110,  0],[110,  0],[ 110,  -110], [110, 110],  [30, 110], [-30, 110],  [-110, 110] ]
+        Position.forEach(function (t) {
+          var x = t[0], y = 1, z = t[1]
+          var tree = addTree(x, y, z)
+          scene.add(tree)
+        })
+    }
+	function addTree (x, y, z) {	
+        var tree = new THREE.Object3D()
+        var TrunkGeometry = new THREE.BoxBufferGeometry(3,25,2)
+        var Trunk = utils.makeMesh('lambert', TrunkGeometry, 0x8a613a)
+        Trunk.position.y = 8
+        tree.add(Trunk)
+        var Geometry = new THREE.SphereGeometry(10, 20,10)
+        var Leafs = utils.makeMesh('lambert', Geometry, 0x9c9e5d)
+        Leafs.position.y = 20
+        tree.add( Leafs)
+        tree.position.set(x, y, z)
+        return tree
+      }
+	}
+	
+	function animate() {
+    var timer = Date.now() * 0.0003;
+    camera.position.x = Math.cos(timer) * 400;
+	camera.position.y = 100;
+    camera.position.z = Math.sin(timer) * 400;
+    requestAnimationFrame(animate);
+    render();
+}
+
+function render() {
+    camera.lookAt(scene.position);
+    renderer.render(scene, camera);
+
+}
+renderer.render(scene, camera)
+function onWindowResize () {
+      window.addEventListener('resize', function () {
+        width = window.innerWidth
+        height = window.innerHeight
+
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix()
+
+        renderer.setSize(width, height)
+		
+      })
+    }
+
+  </script>
+</body>
+</html>
