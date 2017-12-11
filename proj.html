@@ -74,7 +74,7 @@ var Wheel = function(){
 
 	var yconst = 18;
 
-    var decorationPositions = [
+    var cartPositions = [
         [-15, cytop, cz],
         [postx, cytop-yconst+10, cz],
         [(postx*2), cytop-(yconst*2), cz],
@@ -92,15 +92,16 @@ var Wheel = function(){
         [-110, cybottom+(yconst*2)+5, cz],
         [-65, cybottom, cz]
     ];
-    this.decorations = [];
 
-	for (var d =0; d<decorationPositions.length; d++){
+    this.carts = [];
+
+	for (var d =0; d<cartPositions.length; d++){
     	var cart = new Cart();
-    	cart.position.set(decorationPositions[d][0], decorationPositions[d][1], decorationPositions[d][2]);
+    	cart.position.set(cartPositions[d][0], cartPositions[d][1], cartPositions[d][2]);
       // cart.rotateX(decorationPositions[d][3]);
       // cart.rotateZ(decorationPositions[d][4]);
         this.add(cart);
-        this.decorations.push(cart);
+        this.carts.push(cart);
     }
 
     var geometry = new THREE.RingGeometry( 10, 50, 15,1 );
@@ -109,8 +110,8 @@ var Wheel = function(){
 	var structure = new THREE.Mesh( geometry, material );
 	structure.scale.set(3,3,3);
 	structure.position.z = -215;
-	//structure.receiveShadow = true;
-    //structure.castShadow = true;
+	structure.receiveShadow = true;
+    structure.castShadow = true;
 	this.add(structure);
 
 }
@@ -119,15 +120,15 @@ Wheel.prototype = Object.create(THREE.Group.prototype);
 Wheel.prototype.constructor = Wheel;
 Wheel.prototype.updatePosition = function() {
 	this.rotation.z += 0.01;
-	for(var d = 0; d < this.decorations.length; d++) {
-        this.decorations[d].updatePosition();
+	for(var d = 0; d < this.carts.length; d++) {
+        this.carts[d].updatePosition();
     }
 };
 
 
 var Cart = function(){
 	THREE.Group.apply(this, arguments);
-	var colors = ['#ff0051', '#f56762','#a53c6c','#f19fa0','#72bdbf','#47689b'];
+	//var colors = ['#ff0051', '#f56762','#a53c6c','#f19fa0','#72bdbf','#47689b'];
 
 	var geometry1 = new THREE.CylinderGeometry(10, 12, 10, 6, 1);
 	var material1 = new THREE.MeshStandardMaterial({
@@ -167,23 +168,6 @@ Cart.prototype.updatePosition = function() {
 	//this.rotation.y +=0.0001;
 };
 
-function addShape( shape, extrudeSettings, color, x, y, z ) {
-		group = new THREE.Group();
-		group.position.y = 50;
-		scene.add( group );
-
-		var geometry = new THREE.ShapeBufferGeometry( shape );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: color, side: THREE.DoubleSide } ) );
-		mesh.position.set( x, y, z - 125 );
-		group.add( mesh );
-
-		// extruded shape
-
-		var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshPhongMaterial( { color: color } ) );
-		mesh.position.set( x, y, z - 75 );;
-		group.add( mesh );
-	}
 
 var Iron= function(){
 THREE.Group.apply(this, arguments);
@@ -191,12 +175,12 @@ var geometry = new THREE.BoxGeometry( 10, 160, 15 );
 var material = new THREE.MeshLambertMaterial( {color: 0xFFC2C2} );
 var cube = new THREE.Mesh( geometry, material );
 
-cube.receiveShadow= true;
 cube.rotateZ(-0.40);
 cube.position.z=-225;
 cube.position.x=-40;
 cube.position.y=-60;
-//cube.castShadow = true;
+cube.receiveShadow= true;
+cube.castShadow = true;
 this.add(cube);
 
 var geometry = new THREE.BoxGeometry( 10, 160, 15 );
@@ -204,6 +188,7 @@ var material = new THREE.MeshLambertMaterial( {color: 0xFFC2C2} );
 var cube = new THREE.Mesh( geometry, material );
 
 cube.receiveShadow= true;
+cube.castShadow= true;
 cube.rotateZ(0.40);
 cube.position.z=-225;
 cube.position.x=40;
@@ -245,10 +230,8 @@ Iron.prototype = Object.create(THREE.Group.prototype);
 Iron.prototype.constructor = Iron;
 
 
-//////////////////
 var scene = new THREE.Scene();
 
-// Create and position a camera
 var camera = new THREE.PerspectiveCamera(
     70,                                   // Field of view
     window.innerWidth/window.innerHeight, // Aspect ratio
@@ -311,10 +294,7 @@ requestAnimationFrame(render);
 function render() {
     controls.update();
 	wheel.updatePosition();
-//	cart.updatePosition();
 
-	//cart.rotation.z-=0.01;
-//	group.rotation.z+=0.01;
     renderer.render(scene, camera);
     requestAnimationFrame(render);
 }
