@@ -5,6 +5,9 @@
    <link rel="icon" href="buildingTexture/MIU-Logo-20th.png">
      <script src="buildingTexture/three.min.js"></script>
      <script src="buildingTexture/functions.js"></script>
+     <script src="three.js-master/examples/js/controls/OrbitControls.js"></script>
+     <script type="text/javascript" src="three.js-master/examples/js/controls/TrackballControls.js"></script>
+     <link href="https://fonts.googleapis.com/css?family=Crafty+Girls" rel="stylesheet">
   <style>
     h3{
       display: block;
@@ -19,6 +22,7 @@
       text-align: center;
       opacity: 0.5;
       width:100%;
+      font-family: 'Crafty Girls', cursive;
 	  }
   </style>
 </head>
@@ -28,14 +32,11 @@
   </div>
 
   <script>
-    var scene, camera, renderer, width, height
+    var scene, camera, renderer, width, height, controls
     var color = { background: 0xA9D5F6 }
     width = window.innerWidth
     height = window.innerHeight
 	
-	
-	init()
-    function init(){
 	
     scene = new THREE.Scene()
     camera = new THREE.PerspectiveCamera(45, width / height, 1, 5000);
@@ -59,7 +60,13 @@
     renderer.shadowMap.type = THREE.PCFSoftShadowMap
     document.body.appendChild(renderer.domElement)
 
-	animate()
+
+    controls = new THREE.OrbitControls( camera, renderer.domElement );
+    controls.target = new THREE.Vector3(300,100,-10);
+    controls.maxPolarAngle = Math.PI / 2;
+
+
+	//animate()
 	//rotate()
 	addTrees()
     Light()
@@ -77,7 +84,7 @@
 
       function addBuilding () {
         var building = createBuilding()
-        building.position.z = -5
+        building.position.z = -3
         scene.add(building)  
       }
 	  
@@ -357,13 +364,358 @@
         tree.position.set(x, y, z)
         return tree
       }
-	}
+
+      var Wheel = function(){
+    THREE.Group.apply(this, arguments);
+
+    var top = 150;
+    var width=15;
+    var segments = 15;
+
+    var geometry = new THREE.TorusGeometry( top, width, 5, segments );
+    var material = new THREE.MeshStandardMaterial( { 
+        color: 0xff0051,
+        shading: THREE.FlatShading, 
+        metalness: 0,
+        roughness: 0.4,
+        refractionRatio: 0.25,
+        emissive: 0xffd423,
+        emissiveIntensity: 0.4 
+    });
+    var torus = new THREE.Mesh( geometry, material );
+    torus.position.z = -200;
+    torus.position.y=140;
+    torus.position.x=0; 
+    torus.receiveShadow = true;
+    torus.castShadow = true;
+    this.add(torus);
+
+    var pointLight = new THREE.DirectionalLight( 0xffd423,.4);
+    pointLight.position.set( 10, 20, 0);
+    this.add( pointLight );
+
+    var cz = torus.position.z + 30;
+
+    var cytop = top-20;
+    var cybottom = -(top-20);
+    var cxright = top-20;
+    var cxleft = -(top-20);
+    var postx = 45;
+    var yconst = 18;
+
+    var cartPositions = [
+        [-15, cytop+140, cz],
+        [postx, cytop-yconst+10+140, cz],
+        [(postx*2), cytop-(yconst*2)+140, cz],
+        [cxright, cytop-(yconst*4)+140, cz],
+        [140, 140, cz],
+        [cxright, cybottom+(yconst*4)+140, cz],
+        [postx*2, cybottom+(yconst*2)-20+140, cz],
+        [postx, cybottom+(yconst)-30+140, cz],
+        [-15, -150+140, cz],
+
+        [-65, cytop-(yconst)+140, cz],
+        [-110, cytop-(yconst*2)-10+140, cz],
+        [-140, 20+140, cz],
+        [-cxright-5, cybottom+(yconst*4)+15+140, cz],
+        [-110, cybottom+(yconst*2)+5+140, cz],
+        [-65, cybottom+140, cz]
+    ];
+
+    this.carts = [];
+
+    for (var d =0; d<cartPositions.length; d++){
+        var cart = new Cart();
+        cart.position.set(cartPositions[d][0], cartPositions[d][1], cartPositions[d][2]);
+      // cart.rotateX(decorationPositions[d][3]);
+      // cart.rotateZ(decorationPositions[d][4]);
+        this.add(cart);
+        this.carts.push(cart);
+    }
+
+    var geometry = new THREE.RingGeometry( 10, 50, 15,1 );
+    var material = new THREE.MeshBasicMaterial( { color: 0xFFCCCC,
+                         wireframe: true, side: THREE.DoubleSide } );
+    var structure = new THREE.Mesh( geometry, material );
+    structure.scale.set(3,3,3);
+    structure.position.z = -215;
+    structure.position.y = 140;
+    structure.receiveShadow = true;
+    structure.castShadow = true;
+    this.add(structure);
+
+}
+
+Wheel.prototype = Object.create(THREE.Group.prototype);
+Wheel.prototype.constructor = Wheel;
+Wheel.prototype.updatePosition = function() {
+    //this.rotation.z += 0.01;
+    for(var d = 0; d < this.carts.length; d++) {
+        this.carts[d].updatePosition();
+    }
+};
+
+
+var Cart = function(){
+    THREE.Group.apply(this, arguments);
+
+    var geometry1 = new THREE.CylinderGeometry(10, 12, 10, 6, 1);
+    var material1 = new THREE.MeshStandardMaterial({
+        color: 0xf8db08,
+        shading: THREE.FlatShading ,
+        metalness: 0,
+        roughness: 0.8,
+        refractionRatio: 0.25
+    });
+    var shapeOne = new THREE.Mesh(geometry1, material1);
+    shapeOne.position.y += 8;
+    shapeOne.castShadow = true;
+    shapeOne.receiveShadow = true;
+    this.add(shapeOne);
+
+    // A Torus to represent the top hook
+    var geometry2 = new THREE.TorusGeometry(7,1,6,4,Math.PI);
+    var material2 = new THREE.MeshStandardMaterial({
+        color: 0xf8db08,
+        shading: THREE.FlatShading ,
+        metalness: 0,
+        roughness: 0.8,
+        refractionRatio: 0.25
+    });
+    var shapeTwo = new THREE.Mesh(geometry2,material2);
+    shapeTwo.position.y += 13;
+    shapeTwo.castShadow = true;
+    shapeTwo.receiveShadow = true;
+    this.add(shapeTwo);
+
+    this.scale.set(1.5,1.5,1.5);
+} 
+Cart.prototype = Object.create(THREE.Group.prototype);
+Cart.prototype.constructor = Cart;
+Cart.prototype.updatePosition = function() {
+    this.rotation.z -= 0.01;
+};
+
+
+var Iron= function(){
+THREE.Group.apply(this, arguments);
+var geometry = new THREE.BoxGeometry( 10, 160, 15 );
+var material = new THREE.MeshLambertMaterial( {color: 0xFFC2C2} );
+var cube = new THREE.Mesh( geometry, material );
+
+cube.rotateZ(-0.40);
+cube.position.z=-225;
+cube.position.x=-40;
+cube.position.y=80;
+cube.receiveShadow= true;
+cube.castShadow = true;
+this.add(cube);
+
+var geometry = new THREE.BoxGeometry( 10, 160, 15 );
+var material = new THREE.MeshLambertMaterial( {color: 0xFFC2C2} );
+var cube = new THREE.Mesh( geometry, material );
+
+cube.receiveShadow= true;
+cube.castShadow= true;
+cube.rotateZ(0.40);
+cube.position.z=-225;
+cube.position.x=40;
+cube.position.y=80;
+this.add(cube);
+
+var theta = 0.1;
+var radius =30;
+var pts=[];
+
+var extrudeSettings = {
+    steps: 1,
+    amount: 18,
+    bevelEnabled: true,
+    bevelThickness: 1,
+    bevelSize: 1,
+    bevelSegments: 1};
+
+for(var i =0; i< 70; i++){
+    theta+=0.1;
+    pts.push( new THREE.Vector2 ( radius * Math.cos( theta ), radius * Math.sin( theta)  ) );
+}
+
+var shape = new THREE.Shape( pts );
+var geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+var texture = new THREE.TextureLoader().load( 'textures/mickey.png' );
+
+texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+texture.repeat.set( 0.04, 0.04 );
+
+var material2 = new THREE.MeshBasicMaterial( { map: texture, wireframe: false } );
+var mesh = new THREE.Mesh( geometry, material2 );
+//mesh.scale.set(5,5,5);
+mesh.position.z-=220;
+mesh.position.y+=140;
+this.add(mesh);
+
+};
+Iron.prototype = Object.create(THREE.Group.prototype);
+Iron.prototype.constructor = Iron;
+
+var Carousel = function(){
+THREE.Group.apply(this, arguments);
+
+//center of it 
+var geometry = new THREE.CylinderBufferGeometry(17, 17, 230, 20, 20, false);
+var material = new THREE.MeshStandardMaterial({
+        color: 0xffdbff,
+        shading: THREE.FlatShading ,
+        metalness: 0,
+        roughness: 0.8,
+        refractionRatio: 0.25
+});
+
+var cent = new THREE.Mesh(geometry, material);
+cent.position.x+=400;
+cent.position.y+=100;
+cent.position.z+=100;
+cent.receiveShadow=true;
+cent.castShadow=true;
+this.add(cent);
+
+//base
+var geometry = new THREE.CylinderBufferGeometry(140, 150, 30, 20, 20, false);
+var material = new THREE.MeshStandardMaterial({
+        color: 0xffdbff,
+        shading: THREE.FlatShading ,
+        metalness: 0,
+        roughness: 0.8,
+        refractionRatio: 0.25
+});
+
+var base = new THREE.Mesh(geometry, material);
+base.position.y+=10;
+base.position.x+=400;
+base.position.z+=100;
+base.rotateY(Math.PI /2);
+base.receiveShadow=true;
+base.castShadow=true;
+this.add(base);
+
+//top
+var geometry = new THREE.ConeBufferGeometry(160, 65, 8, 1, true );
+var texture = new THREE.TextureLoader().load( 'textures/col.jpg' );
+var material = new THREE.MeshStandardMaterial( {
+    
+    map:texture,
+    side:THREE.DoubleSide,
+    shading: THREE.FlatShading,
+    metalness: 0,
+    roughness: 0.8,
+    refractionRatio: 0.25
+});
+
+var cone = new THREE.Mesh( geometry, material );
+cone.position.y+=200;
+cone.position.x+=400;
+cone.position.z+=100;
+cone.receiveShadow=true;
+cone.castShadow=true;
+this.add( cone );
+
+var cupsPosition =[
+    [315,65,110],
+    [375,65,195],
+    [470, 65,125],
+    [345,65,25],
+    [455,65,40]
+];
+this.cups = [];
+for(var c=0; c<cupsPosition.length; c++){
+    var cup = new Cups();
+    cup.position.set(cupsPosition[c][0], cupsPosition[c][1], cupsPosition[c][2]);
+    this.add(cup);
+    this.cups.push(cup);    
+    }
+
+}
+Carousel.prototype = Object.create(THREE.Group.prototype);
+Carousel.prototype.constructor = Carousel;
+Carousel.prototype.updatePosition = function(){
+
+}
+
+var Cups = function(){
+THREE.Group.apply(this, arguments);
+
+    var colors = ['#ff0051', '#f56762','#53c6c','#f19fa0','#72bdbf','#47689b'];
+
+var geometry = new THREE.SphereBufferGeometry( 40, 12, 12,0, Math.PI*2,0, (Math.PI/2)+0.4);
+
+var rand = Math.floor(Math.random()*colors.length);
+var material = new THREE.MeshStandardMaterial( {color: colors[rand],
+    side: THREE.DoubleSide,
+    shading: THREE.FlatShading,
+    metalness: 0,
+    roughness: 0.8,
+    refractionRatio: 0.25} );
+var sphere = new THREE.Mesh( geometry, material );
+sphere.rotateX(Math.PI);
+sphere.receiveShadow=true;
+sphere.castShadow=true;
+
+this.add( sphere );
+
+var geometry2 = new THREE.TorusBufferGeometry(15,3,10,40,Math.PI);
+var material2 = new THREE.MeshStandardMaterial({
+        color: colors[rand],
+        shading: THREE.FlatShading ,
+        metalness: 0,
+        roughness: 0.8,
+        refractionRatio: 0.25
+});
+var handle = new THREE.Mesh(geometry2,material2);
+handle.position.x-= 35;
+handle.position.y= 0;
+
+handle.castShadow = true;
+handle.receiveShadow = true;
+handle.rotateZ(Math.PI/2);
+this.add(handle);
+
+}
+Cups.prototype = Object.create(THREE.Group.prototype);
+Cups.prototype.constructor = Cups;
+
+var wheel = new Wheel();
+var iron = new Iron();
+scene.add(iron);
+var carousel = new Carousel();
+
+var dummy = new THREE.Object3D();
+dummy.position.x = 400;
+dummy.position.z = 100;
+dummy.position.y= -100
+scene.add(dummy);
+carousel.position.x=-400;
+carousel.position.z=-100;
+carousel.position.y=100;
+dummy.add(carousel);
+
+
+var dummy2 = new THREE.Object3D();
+dummy2.position.z= 200;
+dummy2.position.y=140;
+scene.add(dummy2);
+wheel.position.y-=140;
+wheel.position.z-=200;
+dummy2.add(wheel);
+
 	
-	function animate() {
-    var timer = Date.now() * 0.0003;
-    camera.position.x = Math.cos(timer) * 400;
-	camera.position.y = 100;
-    camera.position.z = Math.sin(timer) * 400;
+animate();
+renderer.render(scene, camera);
+
+function animate() {
+    wheel.updatePosition();
+    dummy.rotation.y-=0.01;
+    dummy2.rotation.z+=0.01;
+
     requestAnimationFrame(animate);
     render();
 }
@@ -371,9 +723,8 @@
 function render() {
     camera.lookAt(scene.position);
     renderer.render(scene, camera);
-
 }
-renderer.render(scene, camera)
+
 function onWindowResize () {
       window.addEventListener('resize', function () {
         width = window.innerWidth
