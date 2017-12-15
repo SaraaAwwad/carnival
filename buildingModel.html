@@ -65,7 +65,6 @@
 
 
     controls = new THREE.OrbitControls( camera, renderer.domElement );
-    //controls.target = new THREE.Vector3(300,100,-10);
     controls.maxPolarAngle = Math.PI / 2.5;
 
 
@@ -857,22 +856,8 @@ function game () {
                                     mesh.receiveShadow = true;
 									this.add(mesh);
 
-
-					
 									
-									//ticket
-
-							    var ticketSides = [
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //right
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //left
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //top
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //bottom
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/tickets.jpg'), side :THREE.DoubleSide}),
-			                        //front
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide})
-			                        //back
-			                                
-			                    ];
+						//ticket tani
 
 								var geometry = new THREE.BoxBufferGeometry(180,210,120);
 								var material = new THREE.MeshFaceMaterial(ticketSides);
@@ -882,22 +867,9 @@ function game () {
 								mesh.castShadow = true;
                                 mesh.receiveShadow = true;
 								this.add(mesh);
-
 								
 
-						//burger
-
-								   var burgerSides = [
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //right
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //left
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //top
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //bottom
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/burguer.png'), side :THREE.DoubleSide}),
-			                        //front
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide})
-			                        //back
-			                                
-			                    	];
+						//burger tani
 
 									var geometry = new THREE.BoxBufferGeometry(180,210,120);
 									var material = new THREE.MeshFaceMaterial(burgerSides);
@@ -931,19 +903,8 @@ function game () {
                                     mesh.receiveShadow = true;
 									this.add(mesh);
 									
-									//Burger 2
-									var burgerSides = [
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //right
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //left
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //top
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //bottom
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/burguer.png'), side :THREE.DoubleSide}),
-			                        //front
-			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide})
-			                        //back
-			                                
-			                    	];
 
+                                    //burger tani.
 									var geometry = new THREE.BoxBufferGeometry(180,210,120);
 									var material = new THREE.MeshFaceMaterial(burgerSides);
 									var mesh = new THREE.Mesh(geometry,material);
@@ -959,7 +920,7 @@ function game () {
 
 				var shop = new Shops();
 				//scale here ya farrah..
-				shop.scale.set(0.4,0.4,0.4);
+				shop.scale.set(0.5,0.5,0.5);
 				shop.castShadow = true;
                 shop.receiveShadow = true;
 				scene.add(shop);
@@ -1137,7 +1098,7 @@ function game () {
 
 			//door
 			var arch = new THREE.CircleBufferGeometry( 70, 100, 0, Math.PI);
-			var newMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
+			var newMaterial = new THREE.MeshBasicMaterial( { color: 0x707070, side: THREE.DoubleSide } );
 			var archMesh = new THREE.Mesh( arch, newMaterial );
 			archMesh.position.y = 45;
 			archMesh.position.z = 140;
@@ -1651,7 +1612,7 @@ wheel.position.y-=180;
 wheel.position.z-=200;
 wheelpivot.add(wheel);
 
-var grass = new THREE.TextureLoader().load( "textures/grass.jpg" );
+var grass = new THREE.TextureLoader().load( "textures/grass2.jpg" );
 var grassMaterial = new THREE. MeshStandardMaterial( { map: grass } );
 var groundMesh = new THREE.Mesh(
     new THREE.BoxGeometry( 1500, .1, 1500 ),
