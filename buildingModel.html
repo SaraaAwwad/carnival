@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Building</title>
+  <title>DisneyLand</title>
    <link rel="icon" href="buildingTexture/MIU-Logo-20th.png">
      <script src="buildingTexture/three.min.js"></script>
      <script src="buildingTexture/functions.js"></script>
@@ -44,8 +44,8 @@
     scene = new THREE.Scene()
     camera = new THREE.PerspectiveCamera(45, width / height, 1, 8000);
     camera.position.x = 0;
-    camera.position.y = 20;
-	camera.position.z = 800;
+    camera.position.y = 290;
+	camera.position.z = 900;
     camera.lookAt({
         x: 30,
         y: 100,
@@ -368,7 +368,7 @@
         return tree
       }
 
-      var Wheel = function(){
+    var Wheel = function(){
     THREE.Group.apply(this, arguments);
 
     var top = 150;
@@ -387,7 +387,7 @@
     });
     var torus = new THREE.Mesh( geometry, material );
     torus.position.z = -200;
-    torus.position.y=140;
+    torus.position.y=180;
     torus.position.x=0; 
     torus.receiveShadow = true;
     torus.castShadow = true;
@@ -400,21 +400,21 @@
     var cz = torus.position.z + 30;
 
     var cartPositions = [
-        [-15, 270, cz],
-        [45, 262, cz],
-        [90, 234, cz],
-        [130, 198, cz],
-        [140, 140, cz],
-        [130, 82, cz],
-        [90, 26, cz],
-        [45, -2, cz],
-        [-15, -10, cz],
-        [-65, 252, cz],
-        [-110, 224, cz],
-        [-140, 160, cz],
-        [-135, 97, cz],
-        [-110, 51, cz],
-        [-65, 10, cz]
+        [-15, 310, cz],
+        [45, 302, cz],
+        [90, 274, cz],
+        [130, 238, cz],
+        [140, 180, cz],
+        [130, 122, cz],
+        [90, 66, cz],
+        [45, 38, cz],
+        [-15, 30, cz],
+        [-65, 292, cz],
+        [-110, 264, cz],
+        [-140, 200, cz],
+        [-135, 137, cz],
+        [-110, 91, cz],
+        [-65, 50, cz]
     ];
 
     this.carts = [];
@@ -432,7 +432,7 @@
     var structure = new THREE.Mesh( geometry, material );
     structure.scale.set(3,3,3);
     structure.position.z = -215;
-    structure.position.y = 140;
+    structure.position.y = 180;
     structure.receiveShadow = true;
     structure.castShadow = true;
     this.add(structure);
@@ -492,7 +492,7 @@ Cart.prototype.updatePosition = function() {
 
 var Iron= function(){
 THREE.Group.apply(this, arguments);
-var geometry = new THREE.BoxGeometry( 10, 160, 15 );
+var geometry = new THREE.BoxGeometry( 10, 180, 15 );
 var material = new THREE.MeshLambertMaterial( {color: 0xFFC2C2} );
 var cube = new THREE.Mesh( geometry, material );
 
@@ -504,7 +504,7 @@ cube.receiveShadow= true;
 cube.castShadow = true;
 this.add(cube);
 
-var geometry = new THREE.BoxGeometry( 10, 160, 15 );
+var geometry = new THREE.BoxGeometry( 10, 180, 15 );
 var material = new THREE.MeshLambertMaterial( {color: 0xFFC2C2} );
 var cube = new THREE.Mesh( geometry, material );
 
@@ -543,9 +543,9 @@ texture.repeat.set( 0.04, 0.04 );
 var material2 = new THREE.MeshBasicMaterial( { map: texture, wireframe: false } );
 
 var mickeyposition=[
-    [0,140,-220,1,1,1],
-    [30,175,-220,0.7,0.7,1],
-    [-30,175,-220,0.7,0.7,1]
+    [0,180,-220,1,1,1],
+    [30,215,-220,0.7,0.7,1],
+    [-30,215,-220,0.7,0.7,1]
 ];
 
 for(var i=0; i<mickeyposition.length; i++){
@@ -823,13 +823,12 @@ Cups.prototype.updatePosition = function() {
 };
 
 
-var wheel = new Wheel();
-var iron = new Iron();
-var teapot = new Teapot();
-scene.add(teapot);
-scene.add(iron);
-var carousel = new Carousel();
+var wheel = new Wheel(); //with the carts
+var iron = new Iron(); 
+var teapot = new Teapot(); //with the cups
+var carousel = new Carousel(); // with the horses
 
+scene.add(iron);
 
 var teapivot = new THREE.Object3D();
 teapivot.position.set(-340,65,100);
@@ -848,13 +847,13 @@ carousel.position.y=85;
 caropivot.add(carousel);
 
 
-var dummy2 = new THREE.Object3D();
-dummy2.position.z= 200;
-dummy2.position.y=140;
-scene.add(dummy2);
-wheel.position.y-=140;
+var wheelpivot = new THREE.Object3D();
+wheelpivot.position.z= 200;
+wheelpivot.position.y=180;
+scene.add(wheelpivot);
+wheel.position.y-=180;
 wheel.position.z-=200;
-dummy2.add(wheel);
+wheelpivot.add(wheel);
 
 var grass = new THREE.TextureLoader().load( "textures/grass.jpg" );
 var grassMaterial = new THREE. MeshStandardMaterial( { map: grass } );
@@ -863,6 +862,7 @@ var groundMesh = new THREE.Mesh(
    grassMaterial
 );
 groundMesh.receiveShadow = true;
+//groundMesh.position.set(0,-10,0);
 scene.add( groundMesh );
 
 animate();
@@ -872,7 +872,7 @@ function animate() {
     wheel.updatePosition();
     teapot.updatePosition();
     caropivot.rotation.y+=0.007;
-    dummy2.rotation.z+=0.008;
+    wheelpivot.rotation.z+=0.008;
     teapivot.rotation.y+=0.007;
     requestAnimationFrame(animate);
     render();
