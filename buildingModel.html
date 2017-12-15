@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>DisneyLand</title>
-   <link rel="icon" href="buildingTexture/MIU-Logo-20th.png">
+     <link rel="icon" href="buildingTexture/MIU-Logo-20th.png">
      <script src="buildingTexture/three.min.js"></script>
      <script src="buildingTexture/functions.js"></script>
      <script src="three.js-master/examples/js/controls/OrbitControls.js"></script>
@@ -74,20 +74,19 @@
 	addTrees()
     Light()
     building()
+	game()
+	castle()
     //loop()
     onWindowResize()
     
     function building () {
-      var planeGeometry = new THREE.BoxBufferGeometry(350,6,350)
-      var plane = utils.makeMesh('lambert', planeGeometry, 0x6f5f6a)
-      plane.position.y = -2
-      scene.add(plane)
-
+      
       addBuilding()
 
       function addBuilding () {
         var building = createBuilding()
-        building.position.z = -3
+        building.position.z = 145
+		building.scale.set(1.2,1.2,1.2)
         scene.add(building)  
       }
 	  
@@ -119,19 +118,19 @@
 		//Main Roof Base
         var MainTop = MainShape
         var Geometry = utils.makeExtrudeGeometry(MainTop, 1)
-        var Material = utils.makeMesh('lambert', Geometry, 0x9F9378)
+        var Material = utils.makeMesh('lambert', Geometry, 0x0792a5)
         Material.position.y = 100
         building.add(Material)
         
         //Main Building Plat
         var Geometry = new THREE.BoxBufferGeometry(155,3,90)
-        var Plat = utils.makeMesh('lambert', Geometry, 0x9F9378)
+        var Plat = utils.makeMesh('lambert', Geometry, 0x0792a5)
         Plat.position.set(1,18,25)
         building.add(Plat)
 
 		//Vertical Plat
         var Geometry = new THREE.BoxBufferGeometry(100, 15, 3)
-        var Vertical = utils.makeMesh('phong', Geometry, 0x9F9378)
+        var Vertical = utils.makeMesh('phong', Geometry, 0x0792a5)
         Vertical.receiveShadow = false
         Vertical.position.set(-26.5, 24, 68.5)
         building.add(Vertical)
@@ -197,13 +196,13 @@
         
         var Main = utils.makeShape(Coords)
 		var Geometry = utils.makeExtrudeGeometry(Main, 90)        
-		var backMain = utils.makeMesh('lambert', Geometry, 0x9F9378)
+		var backMain = utils.makeMesh('lambert', Geometry, 0xf2e21b)
         building.add(backMain)
 
 		//Back Main Roof Base
         var Top1 = Main
         var Geometry = utils.makeExtrudeGeometry(Top1, 1)
-        var Mesh = utils.makeMesh('lambert', Geometry, 0x9F9378)
+        var Mesh = utils.makeMesh('lambert', Geometry, 0xf2e21b)
 		
         Mesh.position.x = 0
 		Mesh.position.y = 100
@@ -264,9 +263,7 @@
 		
 	    //Side Window
         var Geometry = new THREE.PlaneGeometry(30,70,1,1)
-        var Material = new THREE.MeshPhongMaterial({color: 0x796e8c,
-        opacity: 0.8,
-        transparent: true})
+        var Material = new THREE.MeshPhongMaterial({color: 0x796e8c})
 		
         var Window = new THREE.Mesh(Geometry, Material)
         Window.position.set(81, 46, -40.5)
@@ -275,9 +272,7 @@
 		
 		//Side Window 2
         var Geometry = new THREE.PlaneGeometry(32,76,1,1)
-        var Material = new THREE.MeshPhongMaterial({color: 0x796e8c,
-        opacity: 0.8,
-        transparent: true})
+        var Material = new THREE.MeshPhongMaterial({color: 0x796e8c})
 
         var Window2 = new THREE.Mesh(Geometry, Material)
         Window2.position.set(-81, 46, -40)
@@ -347,7 +342,7 @@
     }
 	
 	function addTrees () {
-        var Position = [ [-110, -110],[-110,  0],[110,  0],[ 110,  -110], [110, 110],  [30, 110], [-30, 110],  [-110, 110] ]
+        var Position = [ [-130, 150],[-130,  0],[130,  0],[ 130,  150], [130, 300],  [50, 300], [-50, 300],  [-130, 300] ]
         Position.forEach(function (t) {
           var x = t[0], y = 1, z = t[1]
           var tree = addTree(x, y, z)
@@ -356,11 +351,11 @@
     }
 	function addTree (x, y, z) {	
         var tree = new THREE.Object3D()
-        var TrunkGeometry = new THREE.BoxBufferGeometry(3,25,2)
+        var TrunkGeometry = new THREE.BoxBufferGeometry(3,10,2)
         var Trunk = utils.makeMesh('lambert', TrunkGeometry, 0x8a613a)
-        Trunk.position.y = 8
+        Trunk.position.y = 5
         tree.add(Trunk)
-        var Geometry = new THREE.SphereGeometry(10, 20,10)
+        var Geometry = new THREE.SphereGeometry(12, 25,10)
         var Leafs = utils.makeMesh('lambert', Geometry, 0x9c9e5d)
         Leafs.position.y = 20
         tree.add( Leafs)
@@ -368,6 +363,809 @@
         return tree
       }
 
+function game () {
+
+      addgame()
+
+      function addgame() {
+        var building = creategame()
+        building.position.set(-520,0,-200);
+		building.scale.set(0.4,0.4,0.4)
+		building.rotation.y = 0.5 * Math.PI
+        scene.add(building)  
+      }
+	  
+
+      function creategame () {
+        var building = new THREE.Object3D()
+
+		//Base
+		var baseGeometry = new THREE.BoxBufferGeometry(400, 10, 200)
+        var base = utils.makeMesh('lambert', baseGeometry, 0xc86432)
+        base.position.y = 6
+		base.position.x = 0
+		base.position.z = 350
+        building.add(base)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(380, 50, 180)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x5e090c)
+        base.position.y = 35
+		base.position.x = 0
+		base.position.z = 352
+        building.add(base)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(390, 10, 190)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x3f3a36)
+        base.position.y = 65
+		base.position.x = 0
+		base.position.z = 350
+        building.add(base)
+		
+	
+		var stairs = new THREE.Object3D()
+		var baseGeometry = new THREE.BoxBufferGeometry(50, 63, 20)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x263465)
+        base.position.y = 28
+		base.position.x = -110
+		base.position.z = 450
+        stairs.add(base)
+
+		var baseGeometry = new THREE.BoxBufferGeometry(50, 43, 20)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x263465)
+        base.position.y = 20
+		base.position.x = -110
+		base.position.z = 470
+        stairs.add(base)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(50, 33, 20)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x263465)
+        base.position.y = 13
+		base.position.x = -110
+		base.position.z = 488
+        stairs.add(base)
+		building.add(stairs)
+		
+		var stairs2 = new THREE.Object3D 
+		var baseGeometry = new THREE.BoxBufferGeometry(50, 63, 20)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x263465)
+        base.position.y = 28
+		base.position.x = 110
+		base.position.z = 450
+        stairs2.add(base)
+
+		var baseGeometry = new THREE.BoxBufferGeometry(50, 43, 20)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x263465)
+        base.position.y = 20
+		base.position.x = 110
+		base.position.z = 470
+        stairs2.add(base)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(50, 33, 20)
+        var base = utils.makeMesh('lambert', baseGeometry, 0x263465)
+        base.position.y = 13
+		base.position.x = 110
+		base.position.z = 488
+        stairs2.add(base)
+		building.add(stairs2)
+		
+		var allfence = new THREE.Object3D()
+		//1
+		var shelfGeometry = new THREE.Geometry()
+        var fenceGeometry = new THREE.BoxGeometry(2, 2, 40)
+		var lineGeometry = new THREE.BoxGeometry(2, 2, 90)
+        // for z-axis
+        for (var i = 0; i < 12; i++) {
+          var geometry = fenceGeometry.clone()
+          geometry.translate(i * 15, 0, 0)
+          shelfGeometry.merge(geometry)
+        }
+        // for x-axis
+        for (var i = 0; i < 2; i++) {
+          var geometry = lineGeometry.clone()
+          geometry.rotateY(0.5 * Math.PI)
+          geometry.scale(2,1,1)
+          geometry.translate(82, 0, -15 + i*30)
+          shelfGeometry.merge(geometry)
+        }
+        shelfGeometry = new THREE.BufferGeometry().fromGeometry(shelfGeometry)
+        var Shelf = utils.makeMesh('phong',shelfGeometry, 0xf09b4a)
+        Shelf.position.set(-83, 90, 440)
+		Shelf.rotation.x = 0.5 * Math.PI
+        allfence.add(Shelf)
+		//2
+		var shelfGeometry = new THREE.Geometry()
+        var fenceGeometry = new THREE.BoxGeometry(2, 2, 40)
+		var lineGeometry = new THREE.BoxGeometry(2, 2, 190)
+        // for z-axis
+        for (var i = 0; i < 26; i++) {
+          var geometry = fenceGeometry.clone()
+          geometry.translate(i * 15, 0, 0)
+          shelfGeometry.merge(geometry)
+        }
+        // for x-axis
+        for (var i = 0; i < 2; i++) {
+          var geometry = lineGeometry.clone()
+          geometry.rotateY(0.5 * Math.PI)
+          geometry.scale(2,1,1)
+          geometry.translate(190, 0, -15 + i*30)
+          shelfGeometry.merge(geometry)
+        }
+        shelfGeometry = new THREE.BufferGeometry().fromGeometry(shelfGeometry)
+        var Shelf = utils.makeMesh('phong',shelfGeometry, 0xf09b4a)
+        Shelf.position.set(-189, 90, 265)
+		Shelf.rotation.x = 0.5 * Math.PI
+        allfence.add(Shelf)
+		
+		//3
+		var shelfGeometry = new THREE.Geometry()
+        var fenceGeometry = new THREE.BoxGeometry(2, 2, 40)
+		var lineGeometry = new THREE.BoxGeometry(2, 2, 90)
+        // for z-axis
+        for (var i = 0; i < 12; i++) {
+          var geometry = fenceGeometry.clone()
+          geometry.translate(i * 15, 0, 0)
+          shelfGeometry.merge(geometry)
+        }
+        // for x-axis
+        for (var i = 0; i < 2; i++) {
+          var geometry = lineGeometry.clone()
+          geometry.rotateY(0.5 * Math.PI)
+          geometry.scale(2,1,1)
+          geometry.translate(82, 0, -15 + i*30)
+          shelfGeometry.merge(geometry)
+        }
+        shelfGeometry = new THREE.BufferGeometry().fromGeometry(shelfGeometry)
+        var Shelf = utils.makeMesh('phong',shelfGeometry, 0xf09b4a)
+        Shelf.position.set(-190, 90, 270)
+		Shelf.rotation.x = 0.5 * Math.PI
+		Shelf.rotation.z = 0.5 * Math.PI
+        allfence.add(Shelf)
+		
+		//4
+		var shelfGeometry = new THREE.Geometry()
+        var fenceGeometry = new THREE.BoxGeometry(2, 2, 40)
+		var lineGeometry = new THREE.BoxGeometry(2, 2, 90)
+        // for z-axis
+        for (var i = 0; i < 12; i++) {
+          var geometry = fenceGeometry.clone()
+          geometry.translate(i * 15, 0, 0)
+          shelfGeometry.merge(geometry)
+        }
+        // for x-axis
+        for (var i = 0; i < 2; i++) {
+          var geometry = lineGeometry.clone()
+          geometry.rotateY(0.5 * Math.PI)
+          geometry.scale(2,1,1)
+          geometry.translate(82, 0, -15 + i*30)
+          shelfGeometry.merge(geometry)
+        }
+        shelfGeometry = new THREE.BufferGeometry().fromGeometry(shelfGeometry)
+        var Shelf = utils.makeMesh('phong',shelfGeometry, 0xf09b4a)
+        Shelf.position.set(190, 90, 270)
+		Shelf.rotation.x = 0.5 * Math.PI
+		Shelf.rotation.z = 0.5 * Math.PI
+        allfence.add(Shelf)
+		building.add(allfence)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(150, 20, 90)
+        var base = utils.makeMesh('lambert', baseGeometry, 0xADC1BB)
+        base.position.y = 74
+		base.position.x = 0
+		base.position.z = 320
+        building.add(base)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(130, 10, 75)
+        var base = utils.makeMesh('lambert', baseGeometry, 0xADC1BB)
+        base.position.y = 88
+		base.position.x = 0
+		base.position.z = 320
+        building.add(base)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(50, 300, 20)
+        var base = utils.makeMesh('lambert', baseGeometry, 0xBF0909)
+        base.position.y = 230
+		base.position.x = 0
+		base.position.z = 320
+        building.add(base)
+		
+		var baseGeometry = new THREE.BoxBufferGeometry(15, 280, 2)
+        var base = utils.makeMesh('lambert', baseGeometry, 0xF3E356)
+        base.position.y = 190
+		base.position.x = 0
+		base.position.z = 330
+        building.add(base)
+		
+		var circle = new THREE.Object3D()
+		circle.castShadow = true;
+		circle.receiveShadow = true;
+
+		var geometry = new THREE.CylinderGeometry(20, 30, 10, 9, 2);
+        var cube = utils.makeMesh('lambert', geometry, 0xADC1BB)
+		cube.position.y = 360
+		cube.position.x = 0
+		cube.position.z = 340
+		cube.rotation.x = 0.5 * Math.PI
+		cube.castShadow = true;
+        cube.receiveShadow = true;
+        circle.add( cube );
+	
+        building.add( circle )
+
+        return building
+      }
+
+     }	
+
+	
+	var Balloons = function(){
+			 		THREE.Group.apply(this, arguments);
+						//ticket
+
+						    //Red
+							var geometry = new THREE.SphereBufferGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial({color: 0xF32905});
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(-700,200,-350);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere ); 
+
+							//Blue
+							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial( {color: 0x0522F3} );
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(-750,150,-440);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere ); 
+
+							//Green
+							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial( {color: 0x22F305} );
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(-800,200,-370);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere );
+							
+							//Yellow
+							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial( {color: 0xF3F305} );
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(-750,250,-400);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(-700,200,-350),
+	                        new THREE.Vector3( -750, 0, -350 )
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(-750,150,-440),
+	                        new THREE.Vector3( -750, 0, -350 )
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(-800,200,-370 ),
+	                        new THREE.Vector3( -750, 0, -350 )
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(-750,250,-400 ),
+	                        new THREE.Vector3( -750, 0, -350 )
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+							
+							//Group 2 
+
+							//Red
+							var geometry = new THREE.SphereBufferGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial({color: 0xF32905});
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(700,200,1150);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere ); 
+
+							//Blue
+							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial( {color: 0x0522F3} );
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(750,150,1140);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere ); 
+
+							//Green
+							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial( {color: 0x22F305} );
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(800,200,1170);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere );
+							
+							//Yellow
+							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
+                            var material = new THREE.MeshBasicMaterial( {color: 0xF3F305} );
+                            var sphere = new THREE.Mesh( geometry, material );
+							sphere.position.set(750,250,1100);
+							sphere.castShadow = true;
+                            sphere.receiveShadow = true;
+                            this.add( sphere );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(700,200,1150),
+	                        new THREE.Vector3(750, 0, 1200 )
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(750,150,1140),
+	                        new THREE.Vector3(750, 0, 1200)
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(800,200,1170 ),
+	                        new THREE.Vector3(750, 0, 1200)
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+							
+							var material = new THREE.LineBasicMaterial({
+	                        color: 0x000000
+                            });
+
+                            var geometry = new THREE.Geometry();
+                            geometry.vertices.push(
+	                        new THREE.Vector3(750,250,1100),
+	                        new THREE.Vector3(750, 0, 1200)
+                            );
+
+                            var line = new THREE.Line( geometry, material );
+							line.castShadow = true;
+                            line.receiveShadow = true;
+                            this.add( line );
+						
+				}
+				Balloons.prototype = Object.create(THREE.Group.prototype);
+				Balloons.prototype.constructor = Shops;
+
+				var balloon = new Balloons();
+				//scale here ya farrah..
+				balloon.scale.set(0.3,0.3,0.3);
+				balloon.castShadow = true;
+                balloon.receiveShadow = true;
+				scene.add(balloon);  
+	  
+	  
+	var Shops = function(){
+			 		THREE.Group.apply(this, arguments);
+						//ticket
+
+							    var ticketSides = [
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //right
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //left
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //top
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //bottom
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/tickets.jpg'), side :THREE.DoubleSide}),
+			                        //front
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide})
+			                        //back
+			                                
+			                    ];
+
+								var geometry = new THREE.BoxBufferGeometry(180,210,120);
+								var material = new THREE.MeshFaceMaterial(ticketSides);
+								var mesh = new THREE.Mesh(geometry,material);
+								mesh.position.set(900,100,-600);
+								mesh.rotation.y = 1.5 * Math.PI
+								mesh.castShadow = true;
+                                mesh.receiveShadow = true;
+								this.add(mesh);
+
+								
+
+						//burger
+
+								   var burgerSides = [
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //right
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //left
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //top
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //bottom
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/burguer.png'), side :THREE.DoubleSide}),
+			                        //front
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide})
+			                        //back
+			                                
+			                    	];
+
+									var geometry = new THREE.BoxBufferGeometry(180,210,120);
+									var material = new THREE.MeshFaceMaterial(burgerSides);
+									var mesh = new THREE.Mesh(geometry,material);
+									mesh.position.set(900,100,-400);
+									mesh.rotation.y = 1.5 * Math.PI
+									mesh.castShadow = true;
+                                    mesh.receiveShadow = true;
+									this.add(mesh);
+
+
+					
+									
+									//ticket
+
+							    var ticketSides = [
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //right
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //left
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //top
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide}), //bottom
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/tickets.jpg'), side :THREE.DoubleSide}),
+			                        //front
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/redtickets.jpg'), side :THREE.DoubleSide})
+			                        //back
+			                                
+			                    ];
+
+								var geometry = new THREE.BoxBufferGeometry(180,210,120);
+								var material = new THREE.MeshFaceMaterial(ticketSides);
+								var mesh = new THREE.Mesh(geometry,material);
+								mesh.position.set(-900,100,1000);
+								mesh.rotation.y = 0.5 * Math.PI
+								mesh.castShadow = true;
+                                mesh.receiveShadow = true;
+								this.add(mesh);
+
+								
+
+						//burger
+
+								   var burgerSides = [
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //right
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //left
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //top
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //bottom
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/burguer.png'), side :THREE.DoubleSide}),
+			                        //front
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide})
+			                        //back
+			                                
+			                    	];
+
+									var geometry = new THREE.BoxBufferGeometry(180,210,120);
+									var material = new THREE.MeshFaceMaterial(burgerSides);
+									var mesh = new THREE.Mesh(geometry,material);
+									mesh.position.set(-900,100,1200);
+									mesh.rotation.y = 0.5 * Math.PI
+									mesh.castShadow = true;
+                                    mesh.receiveShadow = true;
+									this.add(mesh);
+									
+									//candyshop
+
+									var candySides = [
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/pinkStripes.jpg'), side :THREE.DoubleSide}), //right
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/pinkStripes.jpg'), side :THREE.DoubleSide}), //left
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/pinkStripes.jpg'), side :THREE.DoubleSide}), //top
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/pinkStripes.jpg'), side :THREE.DoubleSide}), //bottom
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/candy1.png'), side :THREE.DoubleSide}),
+			                        //front
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/pinkStripes.jpg'), side :THREE.DoubleSide})
+			                        //back
+			                                
+			                    	];
+
+									var geometry = new THREE.BoxBufferGeometry(180,210,120);
+									var material = new THREE.MeshFaceMaterial(candySides);
+									var mesh = new THREE.Mesh(geometry,material);
+									mesh.position.set(900,100,1000);
+									mesh.rotation.y = 1.5 * Math.PI
+									mesh.castShadow = true;
+                                    mesh.receiveShadow = true;
+									this.add(mesh);
+									
+									//Burger 2
+									var burgerSides = [
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //right
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //left
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //top
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide}), //bottom
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/burguer.png'), side :THREE.DoubleSide}),
+			                        //front
+			                        new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load('textures/orgstripes.png'), side :THREE.DoubleSide})
+			                        //back
+			                                
+			                    	];
+
+									var geometry = new THREE.BoxBufferGeometry(180,210,120);
+									var material = new THREE.MeshFaceMaterial(burgerSides);
+									var mesh = new THREE.Mesh(geometry,material);
+									mesh.position.set(900,100,1200);
+									mesh.rotation.y = 1.5 * Math.PI
+									mesh.castShadow = true;
+                                    mesh.receiveShadow = true;
+									this.add(mesh);
+
+				}
+				Shops.prototype = Object.create(THREE.Group.prototype);
+				Shops.prototype.constructor = Shops;
+
+				var shop = new Shops();
+				//scale here ya farrah..
+				shop.scale.set(0.4,0.4,0.4);
+				shop.castShadow = true;
+                shop.receiveShadow = true;
+				scene.add(shop);
+	  
+	  
+	function castle(){
+	
+	    addCastle ()
+	
+	    function addCastle () {
+        var castle = createCastle()
+        castle.position.z = -570
+		castle.position.y = 50
+        scene.add(castle)  
+        }
+	
+
+	    function createCastle(){
+	
+	        var castle = new THREE.Object3D()
+	        var texture = new THREE.TextureLoader().load( "textures/wall2.jpg" );
+			var texture2 = new THREE.TextureLoader().load("textures/golden2.jpg");
+			var texture3 = new THREE.TextureLoader().load("textures/stones.jpg");
+
+			texture3.wrapS = texture3.wrapT = THREE.RepeatWrapping;
+			texture3.repeat.set(1,1);
+
+			//largest base
+			var base = new THREE.BoxGeometry(300,100,300);
+			var material = new THREE.MeshBasicMaterial({map:texture3});
+			var baseMesh = new THREE.Mesh(base, material);
+			castle.add(baseMesh);
+
+			/*LEFT SIDE*/
+
+			/*FRONT LEFT*/
+
+			//left side cylinder
+			var left1 = new THREE.CylinderGeometry( 30, 45, 130, 32 );
+			var material2 = new THREE.MeshBasicMaterial( {map: texture} );
+			var leftSide1 = new THREE.Mesh( left1, material2 );
+			leftSide1.position.x = -190;
+			leftSide1.position.y += 15;
+			leftSide1.position.z = 100;
+			castle.add( leftSide1 );
+
+			//left gold top torus
+			var geometry2 = new THREE.TorusGeometry(30,40,50,100);
+			var material3 = new THREE.MeshBasicMaterial({map:texture2});
+			var round = new THREE.Mesh(geometry2,material3);
+			round.position.x = -190;
+			round.position.y += 120;
+			round.position.z = 90;
+			round.rotateX(Math.PI/2);
+			castle.add(round);
+
+			// top cone
+			var shape2 = new THREE.ConeGeometry( 20, 30, 40 );
+			material3 = new THREE.MeshBasicMaterial({map:texture2})
+			var cone2 = new THREE.Mesh( shape2, material3 );
+			cone2.position.x = -190;
+			cone2.position.y += 175;
+			cone2.position.z = 95;
+			castle.add( cone2 );
+
+
+			/*BACK LEFT*/
+
+			//left side cylinder
+			var left2 = new THREE.CylinderGeometry( 60, 100, 300, 32 );
+			material2 = new THREE.MeshBasicMaterial( {map: texture} );
+			var leftSide2 = new THREE.Mesh( left2, material2 );
+			leftSide2.position.x = -250;
+			leftSide2.position.y += 100;
+			leftSide2.position.z = -70;
+			castle.add( leftSide2 );
+
+			//left gold top
+			var geometry3 = new THREE.TorusGeometry(50,60,70,100);
+			material3 = new THREE.MeshBasicMaterial({map:texture2});
+			var round2 = new THREE.Mesh(geometry3,material3);
+			round2.position.x = -250;
+			round2.position.y += 250;
+			round2.position.z = -70;
+			round2.rotateX(Math.PI/2);
+			castle.add(round2);
+
+			// top cone
+			var shape3 = new THREE.ConeGeometry( 30, 40, 60 );
+			material3 = new THREE.MeshBasicMaterial({map:texture2})
+			var cone3 = new THREE.Mesh( shape3, material3 );
+			cone3.position.x = -250;
+			cone3.position.y += 320;
+			cone3.position.z = -70;
+			castle.add( cone3 );
+
+
+
+									/*RIGHT SIDE*/
+
+			/*FRONT RIGHT*/
+
+			//right side
+			var right1 = new THREE.CylinderGeometry( 30, 45, 130, 32 );
+			material2 = new THREE.MeshBasicMaterial( {map: texture} );
+			var rightSide1 = new THREE.Mesh( right1, material2 );
+			rightSide1.position.x += 190;
+			rightSide1.position.y += 15;
+			rightSide1.position.z = 100;
+			castle.add( rightSide1 );
+
+			//right gold top
+			var geometry3 = new THREE.TorusGeometry(30,40,50,100);
+			material3 = new THREE.MeshBasicMaterial({map:texture2});
+			var round2 = new THREE.Mesh(geometry3,material3);
+			round2.position.y += 120;
+			round2.position.x = 190;
+			round2.position.z = 90;
+			round2.rotateX(Math.PI/2);
+			castle.add(round2);
+
+			// top cone
+			var shape4 = new THREE.ConeGeometry( 20, 30, 40 );
+			material3 = new THREE.MeshBasicMaterial({map:texture2})
+			var cone4 = new THREE.Mesh( shape4, material3 );
+			cone4.position.x = 190;
+			cone4.position.y += 175;
+			cone4.position.z = 95;
+			castle.add( cone4 );
+
+
+
+			/*BACK RIGHT*/
+
+			//right side cylinder
+			var right2 = new THREE.CylinderGeometry( 60, 100, 300, 32 );
+			material2 = new THREE.MeshBasicMaterial( {map: texture} );
+			var rightSide2 = new THREE.Mesh( right2, material2 );
+			rightSide2.position.x = 250;
+			rightSide2.position.y += 100;
+			rightSide2.position.z = -70;
+			castle.add( rightSide2 );
+
+			//right gold top torus
+			var geometry4 = new THREE.TorusGeometry(50,60,70,100);
+			material3 = new THREE.MeshBasicMaterial({map:texture2});
+			var round4 = new THREE.Mesh(geometry4,material3);
+			round4.position.x = 250;
+			round4.position.y += 250;
+			round4.position.z = -70;
+			round4.rotateX(Math.PI/2);
+			castle.add(round4);
+
+			// top cone
+			var shape5 = new THREE.ConeGeometry( 30, 40, 60 );
+			material3 = new THREE.MeshBasicMaterial({map:texture2})
+			var cone5 = new THREE.Mesh( shape5, material3 );
+			cone5.position.x = 250;
+			cone5.position.y += 320;
+			cone5.position.z = -70;
+			castle.add( cone5 );
+
+
+
+										/*MIDDLE*/
+
+			//middle cylinder
+			var middle = new THREE.CylinderGeometry( 100, 140, 400, 32 );
+			material2 = new THREE.MeshBasicMaterial( {map: texture} );
+			var middleMesh = new THREE.Mesh( middle, material2 );
+			//middleMesh.position.x = 250;
+			middleMesh.position.y += 180;
+			//middleMesh.position.z = -70;
+			castle.add( middleMesh );
+
+			//door
+			var arch = new THREE.CircleBufferGeometry( 70, 100, 0, Math.PI);
+			var newMaterial = new THREE.MeshBasicMaterial( { color: 0x000000, side: THREE.DoubleSide } );
+			var archMesh = new THREE.Mesh( arch, newMaterial );
+			archMesh.position.y = 45;
+			archMesh.position.z = 140;
+			castle.add( archMesh );
+
+			//middle gold top torus
+			var bigTop = new THREE.TorusGeometry(80,90,100,100);
+			material3 = new THREE.MeshBasicMaterial({map:texture2});
+			var bigMesh = new THREE.Mesh(bigTop,material3);
+			//bigMesh.position.x = 250;
+			bigMesh.position.y += 400;
+			//bigMesh.position.z = -70;
+			bigMesh.rotateX(Math.PI/2);
+			castle.add(bigMesh);
+
+			//top cone
+			var bigCone = new THREE.ConeGeometry( 50, 60, 80 );
+			material3 = new THREE.MeshBasicMaterial({map:texture2})
+			var coneMesh = new THREE.Mesh( bigCone, material3 );
+			//cone5.position.x = 250;
+			coneMesh.position.y += 520;
+			//cone5.position.z = -70;
+			castle.add( coneMesh );  
+			
+			return castle
+			}}
+	  
+	  
     var Wheel = function(){
     THREE.Group.apply(this, arguments);
 
