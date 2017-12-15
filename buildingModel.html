@@ -65,8 +65,8 @@
 
 
     controls = new THREE.OrbitControls( camera, renderer.domElement );
-    controls.target = new THREE.Vector3(300,100,-10);
-    controls.maxPolarAngle = Math.PI / 2;
+    //controls.target = new THREE.Vector3(300,100,-10);
+    controls.maxPolarAngle = Math.PI / 2.5;
 
 
 	//animate()
@@ -603,7 +603,7 @@ function game () {
 
 						    //Red
 							var geometry = new THREE.SphereBufferGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial({color: 0xF32905});
+                            var material = new THREE.MeshLambertMaterial({color: 0xF32905});
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(-700,200,-350);
 							sphere.castShadow = true;
@@ -612,7 +612,7 @@ function game () {
 
 							//Blue
 							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial( {color: 0x0522F3} );
+                            var material = new THREE.MeshLambertMaterial( {color: 0x0522F3} );
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(-750,150,-440);
 							sphere.castShadow = true;
@@ -621,7 +621,7 @@ function game () {
 
 							//Green
 							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial( {color: 0x22F305} );
+                            var material = new THREE.MeshLambertMaterial( {color: 0x22F305} );
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(-800,200,-370);
 							sphere.castShadow = true;
@@ -630,7 +630,7 @@ function game () {
 							
 							//Yellow
 							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial( {color: 0xF3F305} );
+                            var material = new THREE.MeshLambertMaterial( {color: 0xF3F305} );
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(-750,250,-400);
 							sphere.castShadow = true;
@@ -701,7 +701,7 @@ function game () {
 
 							//Red
 							var geometry = new THREE.SphereBufferGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial({color: 0xF32905});
+                            var material = new THREE.MeshLambertMaterial({color: 0xF32905});
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(700,200,1150);
 							sphere.castShadow = true;
@@ -710,7 +710,7 @@ function game () {
 
 							//Blue
 							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial( {color: 0x0522F3} );
+                            var material = new THREE.MeshLambertMaterial( {color: 0x0522F3} );
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(750,150,1140);
 							sphere.castShadow = true;
@@ -719,7 +719,7 @@ function game () {
 
 							//Green
 							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial( {color: 0x22F305} );
+                            var material = new THREE.MeshLambertMaterial( {color: 0x22F305} );
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(800,200,1170);
 							sphere.castShadow = true;
@@ -728,7 +728,7 @@ function game () {
 							
 							//Yellow
 							var geometry = new THREE.SphereGeometry( 50, 10, 32 );
-                            var material = new THREE.MeshBasicMaterial( {color: 0xF3F305} );
+                            var material = new THREE.MeshLambertMaterial( {color: 0xF3F305} );
                             var sphere = new THREE.Mesh( geometry, material );
 							sphere.position.set(750,250,1100);
 							sphere.castShadow = true;
@@ -797,7 +797,7 @@ function game () {
 						
 				}
 				Balloons.prototype = Object.create(THREE.Group.prototype);
-				Balloons.prototype.constructor = Shops;
+				Balloons.prototype.constructor = Balloons;
 
 				var balloon = new Balloons();
 				//scale here ya farrah..
@@ -1497,8 +1497,6 @@ var Teapot = function(){
     circle.rotateX(Math.PI /2);
     circle.position.set(-340,100,100);
     this.add( circle );
-
-
 //the pouring handle
     var geometry = new THREE.TorusBufferGeometry( 25, 8, 16, 100 , Math.PI /2);
     var material = new THREE.MeshStandardMaterial( { color: 0xff9966 , side:THREE.DoubleSide,    shading: THREE.FlatShading,
