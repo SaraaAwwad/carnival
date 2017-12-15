@@ -9,6 +9,10 @@
      <script type="text/javascript" src="three.js-master/examples/js/controls/TrackballControls.js"></script>
      <link href="https://fonts.googleapis.com/css?family=Crafty+Girls" rel="stylesheet">
   <style>
+  body{
+    overflow: hidden;
+    margin:0;
+  }
     h3{
       display: block;
       font-size: 50px;
@@ -651,16 +655,15 @@ Carousel.prototype.constructor = Carousel;
 
 var Teapot = function(){
     THREE.Group.apply(this,arguments);
-
+//teapot
     var geometry = new THREE.SphereBufferGeometry( 40,160,160);
-    var material = new THREE.MeshStandardMaterial( {color: 0xff99ff,
+    var material = new THREE.MeshStandardMaterial( {color: 0xff9966,
     side: THREE.DoubleSide,
     shading: THREE.FlatShading,
     metalness: 0,
     roughness: 0.8,
     refractionRatio: 0.25} );
     
-    //teapot
     var sphere = new THREE.Mesh( geometry, material );
     sphere.receiveShadow=true;
     sphere.castShadow=true;
@@ -700,7 +703,7 @@ var Teapot = function(){
 
 //the pouring handle
     var geometry = new THREE.TorusBufferGeometry( 25, 8, 16, 100 , Math.PI /2);
-    var material = new THREE.MeshStandardMaterial( { color: 0xff99ff , side:THREE.DoubleSide,    shading: THREE.FlatShading,
+    var material = new THREE.MeshStandardMaterial( { color: 0xff9966 , side:THREE.DoubleSide,    shading: THREE.FlatShading,
     metalness: 0,
     roughness: 0.8,
     refractionRatio: 0.25 } );
@@ -710,10 +713,10 @@ var Teapot = function(){
         this.add(torus);
         torus.rotateX(Math.PI );
         torus.rotateY(Math.PI);
-
+//handle
     var geometry2 = new THREE.TorusBufferGeometry(24,5,20,40,Math.PI);
     var material2 = new THREE.MeshStandardMaterial({
-        color: 0xff99ff,
+        color: 0xff9966,
         shading: THREE.FlatShading ,
         metalness: 0,
         roughness: 0.8,
@@ -853,10 +856,11 @@ wheel.position.y-=140;
 wheel.position.z-=200;
 dummy2.add(wheel);
 
-var shadowMaterial = new THREE.ShadowMaterial( { color: 0xffffff } );
+var grass = new THREE.TextureLoader().load( "textures/grass.jpg" );
+var grassMaterial = new THREE. MeshStandardMaterial( { map: grass } );
 var groundMesh = new THREE.Mesh(
-    new THREE.BoxGeometry( 1000, .1, 1000 ),
-    shadowMaterial
+    new THREE.BoxGeometry( 1500, .1, 1500 ),
+   grassMaterial
 );
 groundMesh.receiveShadow = true;
 scene.add( groundMesh );
