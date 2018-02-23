@@ -5,8 +5,8 @@
      <link rel="icon" href="buildingTexture/MIU-Logo-20th.png">
      <script src="buildingTexture/three.min.js"></script>
      <script src="buildingTexture/functions.js"></script>
-     <script src="three.js-master/examples/js/controls/OrbitControls.js"></script>
-     <script type="text/javascript" src="three.js-master/examples/js/controls/TrackballControls.js"></script>
+     <script src="buildingTexture/OrbitControls.js"></script>
+     <script type="text/javascript" src="buildingTexture/TrackballControls.js"></script>
      <link href="https://fonts.googleapis.com/css?family=Crafty+Girls" rel="stylesheet">
   <style>
   body{
@@ -44,19 +44,13 @@
     scene = new THREE.Scene()
     camera = new THREE.PerspectiveCamera(45, width / height, 1, 8000);
     camera.position.x = 0;
-    camera.position.y = 290;
-	camera.position.z = 900;
-    camera.lookAt({
-        x: 30,
-        y: 100,
-        z: 10
-    });
+    camera.position.y = 590;
+	camera.position.z = 1500;
 	scene.add(camera)
 	
 	renderer = new THREE.WebGLRenderer()
     renderer.setSize(width, height)
     renderer.setClearColor(color.background)
-	renderer.domElement.style.position = "relative";
     renderer.shadowMap.enabled = true
 	renderer.shadowMapEnabled = true;
     renderer.shadowMapSoft = true;
@@ -67,15 +61,12 @@
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     controls.maxPolarAngle = Math.PI / 2.5;
 
-
-	//animate()
-	//rotate()
 	addTrees()
     Light()
     building()
 	game()
 	castle()
-    //loop()
+    
     onWindowResize()
     
     function building () {
@@ -326,13 +317,12 @@
     
     function Light() {
       
-	    var direction = 400;
+	     var direction = 1200;
         var directional = new THREE.DirectionalLight( 0xffffff , 1.1);
         directional.position.set( 300, 1000, 500 );
         directional.target.position.set( 0, 0, 0 );
         directional.castShadow = true;
         directional.shadow.camera = new THREE.OrthographicCamera( -direction, direction, direction, -direction,  500, 1600 );
-        directional.shadow.bias = 0.0001;
         directional.shadow.mapSize.width = directional.shadow.mapSize.height = 1024;
         scene.add(directional)
         var light = new THREE.AmbientLight( 0xffffff, 0.4 )
@@ -799,7 +789,6 @@ function game () {
 				Balloons.prototype.constructor = Balloons;
 
 				var balloon = new Balloons();
-				//scale here ya farrah..
 				balloon.scale.set(0.3,0.3,0.3);
 				balloon.castShadow = true;
                 balloon.receiveShadow = true;
@@ -919,7 +908,6 @@ function game () {
 				Shops.prototype.constructor = Shops;
 
 				var shop = new Shops();
-				//scale here ya farrah..
 				shop.scale.set(0.5,0.5,0.5);
 				shop.castShadow = true;
                 shop.receiveShadow = true;
@@ -1379,7 +1367,7 @@ cone.castShadow=true;
 this.add( cone );
 
     var loader = new THREE.JSONLoader( true );
-    loader.load( "three.js-master/examples/models/animated/horse.js", createhorse); 
+    loader.load( "buildingTexture/horse.js", createhorse); 
 
   var group = new THREE.Group();
 
@@ -1459,7 +1447,7 @@ var Teapot = function(){
     circle.position.set(-340,100,100);
     this.add( circle );
 //the pouring handle
-    var geometry = new THREE.TorusBufferGeometry( 25, 8, 16, 100 , Math.PI /2);
+    var geometry = new THREE.TorusBufferGeometry( 25, 8, 100, 100 , Math.PI /2);
     var material = new THREE.MeshStandardMaterial( { color: 0xff9966 , side:THREE.DoubleSide,    shading: THREE.FlatShading,
     metalness: 0,
     roughness: 0.8,
@@ -1631,7 +1619,9 @@ function animate() {
     caropivot.rotation.y+=0.007;
     wheelpivot.rotation.z+=0.008;
     teapivot.rotation.y+=0.007;
+    
     requestAnimationFrame(animate);
+    camera.updateProjectionMatrix();
     render();
 }
 
